@@ -1,15 +1,17 @@
 package com.my.company;
 
+import javafx.util.Pair;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Hello world!
- *
- */
 public class App {
-    public static void main(String[] args) {
+    /**
+     * read range from console
+     * @return Pair of number as begin and end range
+     */
+    public Pair<Long, Long> readRange() {
         long beforeIp = 0;
         long afterIp = 0;
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
@@ -18,17 +20,17 @@ public class App {
             boolean isValidRange = false;
             while (!isValidRange) {
                 System.out.println("Enter range of ips!");
-                boolean checkBeforeLine = false;
-                while (!checkBeforeLine) {
+                boolean isValidBefore = false;
+                while (!isValidBefore) {
                     System.out.print("before ip:> ");
                     beforeLine = reader.readLine();
-                    checkBeforeLine = checkIp(beforeLine);
+                    isValidBefore = checkIp(beforeLine);
                 }
-                boolean checkAfterLine = false;
-                while (!checkAfterLine) {
+                boolean isValidAfter = false;
+                while (!isValidAfter) {
                     System.out.print("after ip:> ");
                     afterLine = reader.readLine();
-                    checkAfterLine = checkIp(afterLine);
+                    isValidAfter = checkIp(afterLine);
                 }
                 beforeIp = ipToLong(beforeLine);
                 afterIp = ipToLong(afterLine);
@@ -38,13 +40,15 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (beforeIp < afterIp - 1) {
-            beforeIp++;
-            printIp(beforeIp);
-        }
+        return new Pair<>(beforeIp, afterIp);
     }
 
-    private static boolean checkIp(String ip) {
+    /**
+     * check ip for: number of parts, parts does contain a parsable integer, 0 <= parts <= 255
+     * @param ip as string
+     * @return value check
+     */
+    public boolean checkIp(String ip) {
         String[] split = ip.split("\\.");
         if (split.length != 4) {
             System.out.println("The number of parts of the IP address is not equal to 4.");
@@ -66,7 +70,12 @@ public class App {
         return true;
     }
 
-    private static long ipToLong(String string) {
+    /**
+     * Convert Ip as string to long
+     * @param string - ip as string
+     * @return ip as long
+     */
+    public long ipToLong(String string) {
         final String[] split = string.split("\\.");
         return ((long) Math.pow(256, 3) * Long.parseLong(split[0]) +
                 (long) Math.pow(256, 2) * Long.parseLong(split[1]) +
@@ -74,7 +83,11 @@ public class App {
                 (long) Math.pow(256, 0) * Long.parseLong(split[3]));
     }
 
-    private static void printIp(long ip) {
+    /**
+     * print ip
+     * @param ip
+     */
+    void printIp(long ip) {
         StringBuilder sb = new StringBuilder();
         sb.append(ip / (long) Math.pow(256, 3));
         long number = ip % (long) Math.pow(256, 3);
