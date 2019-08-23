@@ -6,12 +6,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class App {
+class App {
     /**
      * read range from console
      * @return Pair of number as begin and end range
      */
-    public Pair<Long, Long> readRange() {
+    Pair<Long, Long> readRange() {
         long beforeIp = 0;
         long afterIp = 0;
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
@@ -38,7 +38,7 @@ public class App {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("I/O problem");
         }
         return new Pair<>(beforeIp, afterIp);
     }
@@ -48,7 +48,7 @@ public class App {
      * @param ip as string
      * @return value check
      */
-    public boolean checkIp(String ip) {
+    boolean checkIp(String ip) {
         String[] split = ip.split("\\.");
         if (split.length != 4) {
             System.out.println("The number of parts of the IP address is not equal to 4.");
@@ -75,7 +75,7 @@ public class App {
      * @param string - ip as string
      * @return ip as long
      */
-    public long ipToLong(String string) {
+    long ipToLong(String string) {
         final String[] split = string.split("\\.");
         return ((long) Math.pow(256, 3) * Long.parseLong(split[0]) +
                 (long) Math.pow(256, 2) * Long.parseLong(split[1]) +
